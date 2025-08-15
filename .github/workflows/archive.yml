@@ -6,6 +6,7 @@ on:
 
 jobs:
   archive-gemini-conversations:
+    runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
