@@ -1,0 +1,10 @@
+name: Archive Gemini Conversations
+
+on:
+  workflow_call:
+
+jobs:
+  archive-gemini-conversations:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: mon-jai/gemini-archiver@main
