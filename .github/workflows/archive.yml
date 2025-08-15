@@ -8,6 +8,5 @@ jobs:
   archive-gemini-conversations:
     permissions:
       contents: write
-    runs-on: ubuntu-latest
     steps:
       - uses: mon-jai/gemini-archiver@main
