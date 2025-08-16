@@ -14,8 +14,12 @@ on:
 # - Automatic commit 3 (triggered by Commit 1, which adds HTML for 'abc')
 # - Automatic commit 4 (triggered by Commit 2, which removes nothing; it should have removed the HTML for 'abc')
 
-# Fixes: The action triggered by commit 2 should only run after commit 3 has been pushed to the branch.
-# It should check out the latest commit (commit 3), not the one that triggered the action (commit 2).
+# This fixes the above race conditions:
+# - If a user pushes a new commit (commit 2) before the action triggered by the first one has started,
+#   the action will check out the latest commit (commit 2), not the one that triggered it (commit 1).
+# - If a user pushes a new commit (commit 2) after the first action has started,
+#   the action triggered by commit 2 will wait for the first action's automatic commit (commit 3) to be pushed to the repository.
+#   The second action will then check out the latest commit (commit 3) when running.
 concurrency:
   group: ${{ github.ref_name }}
 
