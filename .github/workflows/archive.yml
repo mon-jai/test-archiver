@@ -9,5 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    # Always check out the latest commit of the branch instead of the commit that triggered the action.
+    # This prevents a race condition where a previous automatic update isn't counted when adding and removing contents.
+    # For example:
+    # - Commit 1 (adds ID 'abc')
+    # - Commit 2 (removes ID 'abc', which triggers this action)
+    # - Automatic commit 3 (triggered by Commit 1, which adds HTML for 'abc')
+    # - Automatic commit 4 (triggered by Commit 2, which removes nothing; it should have removed the HTML for 'abc')
+    concurrency:
+      group: ${{ github.ref_name }}
     steps:
       - uses: mon-jai/gemini-archiver@main
