@@ -7,11 +7,15 @@ on:
 # Always run at most one instance of the workflow at a time.
 # When combined with the `ref` option on `actions/checkout@v5` in the `action.yml` file,
 # this prevents a race condition in which a previous automatic update isn't counted when adding or removing content.
+
 # For example:
 # - Commit 1 (adds ID 'abc')
 # - Commit 2 (removes ID 'abc', which triggers this action)
 # - Automatic commit 3 (triggered by Commit 1, which adds HTML for 'abc')
 # - Automatic commit 4 (triggered by Commit 2, which removes nothing; it should have removed the HTML for 'abc')
+
+# Fixes: The action triggered by commit 2 should only run after commit 3 has been pushed to the branch.
+# It should check out the latest commit (commit 3), not the one that triggered the action (commit 2).
 concurrency:
   group: ${{ github.ref_name }}
 
